@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body><title>Leben in der Strömung</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Fredoka:wght@500;600&display=swap">
+<style>
+/* Layout: eine schmale Lernspalte wie ein Arbeitsheft; ein Schritt pro Bildschirm, große Tippflächen fürs iPad. Farben der Diagramme wie im Buch (blau, rot, lila). */
+:root{
+  --bg:#eef5f4; --surface:#ffffff; --surface-2:#e1edeb; --ink:#12313a; --muted:#4b666e; --line:#c6dad7;
+  --river:#1d6f99; --river-ink:#ffffff; --moss:#3d7a31; --moss-bg:#e4f0df;
+  --speed:#2f97d1; --oxy:#df6555; --temp:#9868bf;
+  --ok:#25793a; --ok-bg:#e1f2e4; --bad:#b93b28; --bad-bg:#fbe6e1; --hint-bg:#fff5d6; --hint-line:#d9ad2b;
+  --land:#d3e6cb; --mount:#b9cfb0; --sea:#b9dcee; --paper:#fffdf6; --paper-line:#cfe0ee;
+  --f-display:'Fredoka','Trebuchet MS',system-ui,sans-serif;
+  --f-body:'Atkinson Hyperlegible','Segoe UI',system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1c21; --surface:#14282e; --surface-2:#1b343b; --ink:#e3eff1; --muted:#9db6bc; --line:#2a454c;
+  --river:#5bb3e0; --river-ink:#062130; --moss:#8cc47c; --moss-bg:#1c3320;
+  --speed:#5bb3e0; --oxy:#ee8576; --temp:#b996d8;
+  --ok:#7fd391; --ok-bg:#163522; --bad:#f08f7d; --bad-bg:#3a1c17; --hint-bg:#352c12; --hint-line:#c9a33a;
+  --land:#1f3a2a; --mount:#2b4a36; --sea:#173d52; --paper:#1a2b30; --paper-line:#2c4a57; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1c21; --surface:#14282e; --surface-2:#1b343b; --ink:#e3eff1; --muted:#9db6bc; --line:#2a454c;
+  --river:#5bb3e0; --river-ink:#062130; --moss:#8cc47c; --moss-bg:#1c3320;
+  --speed:#5bb3e0; --oxy:#ee8576; --temp:#b996d8;
+  --ok:#7fd391; --ok-bg:#163522; --bad:#f08f7d; --bad-bg:#3a1c17; --hint-bg:#352c12; --hint-line:#c9a33a;
+  --land:#1f3a2a; --mount:#2b4a36; --sea:#173d52; --paper:#1a2b30; --paper-line:#2c4a57; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:18px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--surface)}
+h1,h2,h3{font-family:var(--f-display);font-weight:600;line-height:1.2;text-wrap:balance;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--river);outline-offset:2px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+.top-in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:10px;padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.brand{font-family:var(--f-display);font-weight:600;font-size:20px;color:var(--river);margin-right:auto;display:flex;align-items:center;gap:8px}
+.brand svg{flex:none}
+.pill{font-size:14px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--surface-2);color:var(--muted);letter-spacing:.02em}
+.btn-ghost{background:none;border:1.5px solid var(--line);border-radius:10px;padding:6px 12px;font-size:16px;min-height:40px}
+main{max-width:760px;margin:0 auto;padding-block:20px 60px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:18px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.muted{color:var(--muted)}
+.small{font-size:15px}
+p{margin:0}
+.btn{border:none;border-radius:12px;padding:12px 20px;min-height:52px;font-weight:700;font-size:18px;background:var(--surface-2)}
+.btn.primary{background:var(--river);color:var(--river-ink)}
+.btn.green{background:var(--moss);color:var(--surface)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* Start */
+.hero h1{font-size:34px}
+.lv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.lv{text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:4px}
+.lv[aria-pressed="true"]{border-color:var(--river);background:var(--surface-2)}
+.lv b{font-family:var(--f-display);font-size:22px;font-weight:600}
+.field{display:flex;flex-direction:column;gap:4px;flex:1 1 200px;min-width:0}
+.field input{font:inherit;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);min-height:50px;width:100%}
+.err{color:var(--bad);font-weight:700}
+
+/* Übersicht */
+.rules{background:var(--surface-2);border-radius:16px;padding:16px 20px;display:flex;flex-direction:column;gap:8px}
+.rules ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px}
+.steps{display:flex;gap:8px;flex-wrap:wrap;font-weight:700;font-size:16px}
+.steps span{background:var(--surface);border-radius:999px;padding:4px 12px}
+.mod{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;width:100%}
+.mod .num{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);font-family:var(--f-display);font-size:22px;font-weight:600;color:var(--river)}
+.mod.done .num{background:var(--ok-bg);color:var(--ok)}
+.mod h3{font-size:21px}
+.mod .meta{font-size:15px;color:var(--muted)}
+.mod .go{font-size:26px;color:var(--river)}
+.minibar{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin-top:6px}
+.minibar i{display:block;height:100%;background:var(--moss);border-radius:99px}
+.foot{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.linkish{background:none;border:none;color:var(--muted);text-decoration:underline;font-size:15px;padding:8px}
+
+/* Aufgabe */
+.crumbs{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.crumbs .where{font-size:15px;color:var(--muted);font-weight:700}
+.prog{height:10px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.prog i{display:block;height:100%;background:var(--river);border-radius:99px;transition:width .3s}
+.task-h{display:flex;gap:10px;align-items:flex-start}
+.sym{font-size:24px;line-height:1.1;color:var(--river);flex:none}
+.task-h h2{font-size:24px}
+.role{font-size:15px;font-weight:700;color:var(--moss);background:var(--moss-bg);padding:6px 12px;border-radius:10px;align-self:flex-start}
+.q{font-size:19px}
+.note{font-size:15px;font-weight:700;color:var(--muted)}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:12px 14px;min-height:56px}
+.opt .key{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);font-weight:700;font-size:15px}
+.opt.on{border-color:var(--river);background:var(--surface-2)}
+.opt.on .key{background:var(--river);color:var(--river-ink)}
+.opt.bad,.slot.bad,.chip.bad,.blank.bad{border-color:var(--bad)!important;background:var(--bad-bg)!important}
+.opt.good,.slot.good,.chip.good{border-color:var(--ok)!important;background:var(--ok-bg)!important}
+.opt:disabled,.chip:disabled,.seg:disabled{cursor:default;opacity:1}
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.slot{display:flex;gap:8px;align-items:center;border:2px dashed var(--line);background:var(--bg);border-radius:12px;padding:10px;min-height:54px;font-weight:700;text-align:left}
+.slot.filled{border-style:solid;border-color:var(--river)}
+.slot .n{flex:none;width:26px;height:26px;border-radius:50%;background:var(--river);color:var(--river-ink);display:grid;place-items:center;font-size:14px}
+.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:20px}
+.chip{border:2px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 14px;min-height:50px;font-weight:700;text-align:left}
+.chip{touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.chip.dragging{opacity:.35}
+.ghost{position:fixed;left:0;top:0;z-index:30;pointer-events:none;margin:0;box-shadow:0 8px 24px rgba(0,0,0,.25);border-color:var(--river)!important}
+.slot.over,.bin.over{outline:3px solid var(--river);outline-offset:2px;background:var(--surface-2)}
+.chip.picked{border-color:var(--river);background:var(--river);color:var(--river-ink)}
+.bins{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.bin{border:2px solid var(--line);border-radius:14px;background:var(--bg);display:flex;flex-direction:column;min-width:0}
+.bin-head{background:none;border:none;border-bottom:1px solid var(--line);padding:12px;text-align:left;display:flex;flex-direction:column;gap:2px;min-height:60px}
+.bin-head b{font-family:var(--f-display);font-weight:600;font-size:19px}
+.bin-head small{color:var(--muted);font-size:14px}
+.bin.ready{border-color:var(--river);border-style:dashed}
+.bin.ready .bin-head::after{content:"Hier antippen zum Ablegen";font-size:13px;font-weight:700;color:var(--river)}
+.bin-items{display:flex;flex-direction:column;gap:6px;padding:10px;min-height:56px}
+.sentence{font-size:20px;line-height:2.3}
+.blank{display:inline-flex;gap:0;border:2px solid var(--line);border-radius:12px;overflow:hidden;vertical-align:middle;margin:0 2px;background:var(--bg)}
+.seg{border:none;background:none;padding:4px 12px;min-height:44px;font-weight:700;font-size:18px}
+.seg+.seg{border-left:1px solid var(--line)}
+.seg.on{background:var(--river);color:var(--river-ink)}
+textarea{font:inherit;width:100%;min-height:120px;border:1.5px solid var(--line);border-radius:12px;padding:12px;background:var(--bg);color:var(--ink);resize:vertical}
+.model{background:var(--ok-bg);border-radius:12px;padding:12px 14px}
+.hint{background:var(--hint-bg);border:2px solid var(--hint-line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.hint b{font-size:14px;letter-spacing:.06em;text-transform:uppercase}
+.fb{border-radius:12px;padding:12px 14px;font-weight:700}
+.fb.ok{background:var(--ok-bg);color:var(--ok)}
+.fb.ok span{display:block;font-weight:400;color:var(--ink);margin-top:4px}
+.fb.no{background:var(--bad-bg);color:var(--bad)}
+.fb.info{background:var(--surface-2)}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+.actions .btn{flex:1 1 150px}
+.btn.hintbtn{background:var(--hint-bg);border:2px solid var(--hint-line)}
+.banner{background:var(--ok-bg);color:var(--ok);border-radius:10px;padding:8px 12px;font-weight:700;font-size:16px}
+
+/* Abbildungen */
+.fig{background:var(--bg);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:6px;overflow-x:auto}
+.fig-t{font-size:15px;font-weight:700;color:var(--muted)}
+.fig svg{display:block;width:100%;height:auto;max-width:560px}
+.fig text{fill:var(--ink);font-family:var(--f-body)}
+.fig .ax{stroke:var(--line);stroke-width:1}
+.fig .tick{fill:var(--muted);font-size:11px}
+.b-speed{fill:var(--speed)} .b-oxy{fill:var(--oxy)} .b-temp{fill:var(--temp)}
+.land{fill:var(--land)} .mount{fill:var(--mount)} .sea{fill:var(--sea)}
+.riv{fill:none;stroke:var(--speed);stroke-linecap:round}
+.dot{fill:var(--surface);stroke:var(--river);stroke-width:3}
+.dot-n{font-size:15px;font-weight:700;fill:var(--river)!important}
+.lab{font-size:14px;font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.lw{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.lw.focus{border:2px solid var(--river)}
+.lw h3{font-size:19px}
+.lw .tag{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.03em}
+.lw p{font-size:16px}
+.lw svg{width:100%;height:70px}
+.plant-s{stroke:var(--moss);fill:none;stroke-width:2.5;stroke-linecap:round}
+.plant-f{fill:var(--moss)}
+.flower{fill:var(--surface);stroke:var(--muted)}
+.water-b{fill:var(--sea)}
+
+/* Merksatz im Heft */
+.heft{background:var(--paper);border-radius:6px;padding:16px 18px 16px 44px;position:relative;background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 31px,var(--paper-line) 31px,var(--paper-line) 32px);line-height:32px;font-size:19px;border:1px solid var(--line)}
+.heft::before{content:"";position:absolute;left:30px;top:0;bottom:0;width:2px;background:var(--oxy);opacity:.5}
+.heft b{font-family:var(--f-display);font-weight:600}
+.big-ok{width:72px;height:72px;border-radius:50%;background:var(--ok-bg);color:var(--ok);display:grid;place-items:center;font-size:40px;font-weight:700}
+
+/* Test */
+.score{font-family:var(--f-display);font-size:56px;font-weight:600;color:var(--river);line-height:1}
+.res{display:flex;flex-direction:column;gap:8px}
+.res div{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:8px 10px;border-radius:10px;background:var(--bg);font-size:16px}
+.res .y{color:var(--ok);font-weight:700}.res .n{color:var(--bad);font-weight:700}
+
+/* Wörter-Hilfe */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;display:flex;align-items:flex-end;justify-content:center;padding:16px;padding-bottom:max(16px,env(safe-area-inset-bottom,0px))}
+.sheet{background:var(--surface);border-radius:18px;max-width:640px;width:100%;max-height:80vh;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:10px}
+.sheet dl{margin:0;display:flex;flex-direction:column;gap:10px}
+.sheet dt{font-weight:700;font-family:var(--f-display);font-size:19px;color:var(--river)}
+.sheet dd{margin:0}
+@media (max-width:480px){body{font-size:17px}.hero h1{font-size:28px}.sentence{font-size:18px}.pill.lvl{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="top"><div class="top-in">
+  <div class="brand"><svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M2 9c4-4 8 4 12 0s8 4 12 0M2 15c4-4 8 4 12 0s8 4 12 0M2 21c4-4 8 4 12 0s8 4 12 0" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>Leben in der Strömung</div>
+  <span class="pill lvl" id="lvlpill" hidden></span>
+  <button class="btn-ghost" data-act="gloss">Wörter-Hilfe</button>
+</div></header>
+<main id="app"></main>
+<div id="ov"></div>
+
+<script>
+const KEY='fluss-kurs-v1', CODE='FORELLE';
+const STELLEN=['Quelle','Oberlauf','Mittellauf','Unterlauf','Mündung'];
+
+const GLOSS=[
+ ['Quelle','Hier kommt das Wasser aus der Erde. Hier beginnt der Fluss.'],
+ ['Mündung','Hier fließt der Fluss ins Meer oder in einen anderen Fluss. Hier endet der Fluss.'],
+ ['Fließgeschwindigkeit','Wie schnell das Wasser fließt. Man misst sie in Metern pro Sekunde (m/s).'],
+ ['Sauerstoff','Ein Gas, das im Wasser gelöst ist. Fische und andere Tiere brauchen ihn zum Atmen.'],
+ ['Strömung','Das fließende Wasser drückt und zieht alles in eine Richtung.'],
+ ['Widerstand / Angriffsfläche','Die Fläche, gegen die das Wasser drückt. Wenig Angriffsfläche heißt: Das Wasser fließt leicht vorbei.'],
+ ['Angepasstheit','Ein Körpermerkmal, das einem Lebewesen hilft, in seinem Lebensraum gut zu leben.'],
+ ['Je … desto …','So beschreibt man zwei Dinge, die zusammenhängen. Beispiel: Je mehr ich lerne, desto besser wird meine Note.']
+];
+
+const ANIMALS={
+ koecher:{n:'Köcherfliegenlarve',s:'ca. 4 cm',b:6,t:'Die Larve baut sich eine Wohnröhre, den Köcher. Dafür klebt sie Sand, Steinchen und Schneckenschalen zusammen. Der Köcher schützt sie vor Feinden. Er macht sie auch schwer, so bleibt sie am Boden.'},
+ haken:{n:'Hakenkäfer',s:'bis 1 cm',b:7,t:'Der Käfer lebt immer unter Wasser und frisst Algen. An den Beinen hat er spitze Haken. Damit hält er sich an Steinen und Pflanzen fest.'},
+ eintag:{n:'Eintagsfliegenlarve',s:'ca. 1 cm',b:8,t:'Sie lebt nur in sauberem Wasser. Ihr Körper ist flach, deshalb drückt das Wasser kaum gegen sie. Mit kleinen Krallen an den Beinen klammert sie sich an Steinen fest.'},
+ koppe:{n:'Mühlkoppe',s:'bis 15 cm',b:9,t:'Ein kleiner Fisch, der am Grund von schnellen Bächen lebt. Kopf und Körper sind breit und flach. Die flache Unterseite liegt auf dem Boden. So hat die Strömung wenig Angriffsfläche.'},
+ egel:{n:'Fischegel',s:'bis 10 cm',b:10,t:'Der Fischegel hat zwei Saugnäpfe. Damit saugt er sich an Fischen fest. Weder die Strömung noch der Fisch können ihn abschütteln. Er ernährt sich vom Blut der Fische.'},
+ napf:{n:'Flussnapfschnecke',s:'bis 1 cm',b:11,t:'Die Schnecke saugt sich mit ihrem Fuß (Kriechsohle) an Steinen fest. Ihr Gehäuse ist flach wie ein Hut, das Wasser gleitet darüber. Sie braucht sehr viel Sauerstoff.'}
+};
+const TRICKS=[
+ {n:'Festhalten',d:'mit Haken, Krallen oder Saugnäpfen'},
+ {n:'Flacher Körper',d:'das Wasser fließt leicht vorbei'},
+ {n:'Schwer machen',d:'Gewicht hält am Boden'}
+];
+
+const MODULES=[
+{ id:'m1', title:'Der Fluss von der Quelle bis zur Mündung', time:'Stunde 1 · ca. 35 Minuten', book:'Buch: Material A',
+  merk:'<b>Merksatz 1</b><br>An der Quelle fließt das Wasser schnell, an der Mündung langsam.<br>Je schneller das Wasser fließt, desto mehr Sauerstoff ist darin.<br>Je wärmer das Wasser ist, desto weniger Sauerstoff ist darin.',
+  tasks:[
+  {id:'1a',lv:'a',type:'order',sym:'○',title:'Der Weg des Wassers',vis:'river',
+   q:'Ein Fluss hat fünf Abschnitte. Bringt die Namen in die richtige Reihenfolge: Feld 1 ist oben im Gebirge, Feld 5 am Meer. Zieht jeden Namen in ein Feld oder tippt ihn an, dann rutscht er ins nächste freie Feld.',
+   items:STELLEN,
+   hints:['Der Fluss beginnt oben im Gebirge an der <b>Quelle</b>. Er endet am Meer an der <b>Mündung</b>.','Dazwischen kommt es wie bei einem Haus: <b>Ober</b> – <b>Mittel</b> – <b>Unter</b>.'],
+   explain:'Der Fluss fließt vom Berg (Quelle) bis ins Meer (Mündung).'},
+  {id:'1b',lv:'a',type:'mc',sym:'○',title:'Wo ist das Wasser am schnellsten?',vis:'speed',
+   q:'Schaut euch das Diagramm an. Wo fließt das Wasser am schnellsten?',
+   opts:['an der Mündung','an der Quelle','im Mittellauf'],ans:1,
+   hints:['Sucht den <b>höchsten</b> blauen Balken.','Der höchste Balken steht ganz links. Lest den Namen darunter.'],
+   explain:'An der Quelle legt das Wasser 2 Meter in einer Sekunde zurück.'},
+  {id:'1c',lv:'b',type:'sentence',sym:'○',title:'Quelle und Mündung vergleichen',vis:'speed',
+   q:'Wählt das richtige Wort aus.',
+   parts:['An der Quelle fließt das Wasser ',{o:['schnell','langsam'],a:0},'.\nAn der Mündung fließt das Wasser ',{o:['schnell','langsam'],a:1},'.'],
+   hints:['Vergleicht den Balken ganz links (Quelle) mit dem ganz rechts (Mündung).','Hoher Balken = schnell. Niedriger Balken = langsam.'],
+   explain:'Der Balken an der Quelle ist hoch, der an der Mündung ist sehr niedrig.'},
+  {id:'1c',lv:'p',type:'sentence',sym:'◐',title:'Quelle und Mündung vergleichen',vis:'speed',
+   q:'Lest die Werte im Diagramm ab und ergänzt.',
+   parts:['An der Quelle fließt das Wasser ',{o:['2,0','1,7','0,5'],a:0},' Meter pro Sekunde.\nAn der Mündung sind es nur ',{o:['2,0','0,3','0,2'],a:2},' Meter pro Sekunde.\nAn der Quelle ist das Wasser also ',{o:['2-mal','10-mal','genauso'],a:1},' so schnell wie an der Mündung.'],
+   hints:['Die Zahlen stehen links an der Achse. Fahrt mit dem Finger von der Balkenspitze nach links.','Rechnet: 2,0 geteilt durch 0,2. Oder: Wie oft passt 0,2 in 2,0?'],
+   explain:'2,0 : 0,2 = 10. Das Wasser an der Quelle ist 10-mal so schnell.'},
+  {id:'1d',lv:'a',type:'mc',sym:'○',title:'Sauerstoff im Wasser',vis:'oxy',
+   q:'Wo ist am meisten Sauerstoff im Wasser?',
+   opts:['im Oberlauf','an der Quelle','an der Mündung'],ans:0,
+   hints:['Sucht den <b>höchsten roten</b> Balken.','Er ist nicht ganz links, sondern der zweite von links.'],
+   explain:'Im Oberlauf sind fast 20 Milligramm Sauerstoff in einem Liter Wasser.'},
+  {id:'1e',lv:'a',type:'sentence',sym:'◐',title:'Je … desto …',vis:'speed+oxy',
+   q:'Vergleicht die beiden Diagramme. Wählt das richtige Wort aus.',
+   parts:['Je höher die Fließgeschwindigkeit, desto ',{o:['höher','niedriger'],a:0},' ist der Sauerstoffgehalt.\nJe niedriger die Fließgeschwindigkeit, desto ',{o:['höher','niedriger'],a:1},' ist der Sauerstoffgehalt.'],
+   hints:['Schaut auf den Oberlauf: schnelles Wasser – viel oder wenig Sauerstoff?','Schaut auf die Mündung: langsames Wasser – viel oder wenig Sauerstoff?'],
+   explain:'Schnelles Wasser spritzt und wirbelt. Dabei kommt Luft und damit Sauerstoff ins Wasser.'},
+  {id:'1f',lv:'p',type:'mc',sym:'◐',title:'Warum ist das so?',vis:null,
+   q:'Warum ist in schnellem Wasser mehr Sauerstoff?',
+   opts:['Im schnellen Wasser leben weniger Fische.','Schnelles Wasser spritzt und wirbelt. Dabei kommt Luft ins Wasser.','Schnelles Wasser ist immer kälter als Eis.'],ans:1,
+   hints:['Denkt an einen Wasserfall oder an einen Bach mit Steinen. Was seht ihr an der Oberfläche?','Weißer Schaum besteht aus vielen kleinen Luftblasen.'],
+   explain:'Durch das Wirbeln kommt viel Luft mit dem Wasser in Kontakt.'},
+  {id:'1g',lv:'a',type:'mc',sym:'○',title:'Die Temperatur',vis:'temp',
+   q:'Wo ist das Wasser am wärmsten?',
+   opts:['an der Quelle','im Mittellauf','an der Mündung'],ans:2,
+   hints:['Sucht den <b>höchsten lila</b> Balken.','Er steht ganz rechts.'],
+   explain:'An der Mündung hat das Wasser über 20 Grad Celsius.'},
+  {id:'1h',lv:'b',type:'mc',sym:'◐',title:'Temperatur und Sauerstoff',vis:'oxy+temp',
+   q:'Vergleicht das rote und das lila Diagramm. Welcher Satz stimmt?',
+   opts:['Je höher die Temperatur, desto höher ist der Sauerstoffgehalt.','Je höher die Temperatur, desto niedriger ist der Sauerstoffgehalt.'],ans:1,
+   hints:['Schaut auf die Mündung: Das Wasser ist warm. Ist dort viel oder wenig Sauerstoff?','Warmes Wasser = wenig Sauerstoff.'],
+   explain:'Warmes Wasser kann weniger Sauerstoff halten als kaltes Wasser.'},
+  {id:'1h',lv:'p',type:'sentence',sym:'●',title:'Temperatur und Sauerstoff',vis:'oxy+temp',
+   q:'Baut selbst einen richtigen Je-desto-Satz. Es gibt zwei richtige Lösungen.',
+   parts:['Je ',{o:['höher','niedriger']},' die Temperatur, desto ',{o:['höher','niedriger']},' ist der Sauerstoffgehalt.'],
+   combos:[[0,1],[1,0]],
+   hints:['Vergleicht Mündung (warm) und Oberlauf (kühler). Wo ist mehr Sauerstoff?','Die beiden Wörter müssen <b>verschieden</b> sein: höher – niedriger oder niedriger – höher.'],
+   explain:'Kaltes Wasser kann mehr Sauerstoff halten als warmes Wasser.'},
+  {id:'1i',lv:'p',type:'mc',sym:'●',title:'Knobelfrage: die Quelle',vis:'speed+oxy',
+   q:'An der Quelle ist das Wasser am schnellsten. Trotzdem hat es weniger Sauerstoff als im Oberlauf. Was ist der Grund?',
+   opts:['Das Wasser kommt gerade aus der Erde. Es hatte noch kaum Kontakt mit Luft.','An der Quelle ist das Wasser am wärmsten.','An der Quelle atmen besonders viele Tiere.'],ans:0,
+   hints:['Woher kommt das Wasser an der Quelle?','Unter der Erde gibt es keine Luft, die ins Wasser wirbeln kann.'],
+   explain:'Das Quellwasser kommt aus dem Boden. Erst auf dem Weg bergab wirbelt es und nimmt Sauerstoff auf.'}
+ ]},
+{ id:'m2', title:'Wasserpflanzen in der Strömung', time:'Stunde 2 · ca. 15 Minuten', book:'Buch: Material B',
+  merk:'<b>Merksatz 2</b><br>Pflanzen in der Strömung haben dünne, biegsame Stängel und kleine oder fadenförmige Blätter.<br>So bieten sie dem Wasser wenig Widerstand und werden nicht weggerissen.',
+  tasks:[
+  {id:'2a',lv:'b',type:'sort',sym:'○',title:'Welche Pflanze ist das?',vis:'plants',
+   q:'Lest die beiden Texte. Zieht jedes Kärtchen zur passenden Pflanze. Oder: erst das Kärtchen antippen, dann die Pflanze.',
+   bins:[{n:'Quellmoos',d:'Bild 4 im Buch'},{n:'Wasserhahnenfuß',d:'Bild 5 im Buch'}],
+   chips:[{t:'Stängel bis zu 6 Meter lang',ok:[1]},{t:'Wurzeln halten sich an Steinen fest',ok:[0]},{t:'Blätter dünn wie Fäden',ok:[1]},{t:'kleine, runde Blättchen',ok:[0]}],
+   hints:['Lest zuerst nur den Text zum Quellmoos. Welche Kärtchen passen?','Beim Wasserhahnenfuß geht es um lange Stängel und fadenförmige Blätter.'],
+   explain:'Beide Pflanzen haben dünne Teile, gegen die das Wasser kaum drückt.'},
+  {id:'2a',lv:'p',type:'sort',sym:'◐',title:'Welche Pflanze ist das?',vis:'plants',
+   q:'Lest die beiden Texte. Zieht jedes Kärtchen in das passende Feld. Oder: erst das Kärtchen antippen, dann das Feld. Zwei Kärtchen passen zu beiden Pflanzen.',
+   bins:[{n:'Quellmoos',d:'Bild 4 im Buch'},{n:'Wasserhahnenfuß',d:'Bild 5 im Buch'},{n:'beide',d:'trifft auf beide zu'}],
+   chips:[{t:'Stängel bis zu 6 Meter lang',ok:[1]},{t:'Wurzeln halten sich an Steinen fest',ok:[0]},{t:'Blätter dünn wie Fäden',ok:[1]},{t:'kleine, runde Blättchen',ok:[0]},{t:'dünne, biegsame Stängel',ok:[2]},{t:'wenig Widerstand für das Wasser',ok:[2]}],
+   hints:['Lest beide Texte und unterstreicht im Kopf die Körperteile: Stängel, Blätter, Wurzeln.','Welche Wörter stehen in <b>beiden</b> Texten? Diese Kärtchen gehören zu „beide“.'],
+   explain:'Beide Pflanzen bieten dem Wasser wenig Widerstand.'},
+  {id:'2b',lv:'a',type:'mc',sym:'○',title:'Warum reißt die Strömung sie nicht ab?',vis:'plants',
+   q:'Warum werden die beiden Pflanzen von der Strömung nicht weggerissen?',
+   opts:['Sie sind sehr schwer.','Sie bieten dem Wasser wenig Widerstand.','Sie wachsen nur dort, wo kein Wasser fließt.'],ans:1,
+   hints:['Lest im Text zum Wasserhahnenfuß den letzten Satz.','Dünne Blätter = das Wasser fließt leicht vorbei.'],
+   explain:'Dünne, biegsame Pflanzenteile geben nach. Das Wasser fließt an ihnen vorbei.'},
+  {id:'2c',lv:'a',type:'mc',sym:'◐',title:'Wo wächst das Quellmoos?',vis:'river-l',
+   q:'Das Quellmoos mag klares, kaltes Wasser mit viel Sauerstoff. In welchem Bereich des Flusses wächst es?',
+   opts:['an Quelle und Oberlauf','im Unterlauf und an der Mündung','nur in einem Teich'],ans:0,
+   hints:['Schaut zurück auf Modul 1: Wo ist das Wasser kalt und hat viel Sauerstoff?','Kalt und viel Sauerstoff gibt es oben am Berg.'],
+   explain:'Oben ist das Wasser kalt, klar und reich an Sauerstoff.'},
+  {id:'2d',lv:'a',type:'mc',sym:'◐',title:'Wo wächst der Wasserhahnenfuß?',vis:'river-l',
+   q:'Der Wasserhahnenfuß verträgt eine starke Strömung. Er braucht aber etwas wärmeres Wasser als das Quellmoos. Wo wächst er?',
+   opts:['an der Mündung, wo es fast keine Strömung gibt','im Oberlauf und Mittellauf'],ans:1,
+   hints:['Wo gibt es noch Strömung, aber das Wasser ist schon etwas wärmer?','Schaut auf die Mitte des Flusses.'],
+   explain:'Im Oberlauf und Mittellauf fließt das Wasser noch kräftig.'},
+  {id:'2e',lv:'p',type:'text',sym:'●',title:'Beschreibt die Angepasstheit',vis:'plants',
+   q:'Beschreibt in einem oder zwei Sätzen: Wie ist der Wasserhahnenfuß an die Strömung angepasst? Nutzt den Satzanfang.',
+   ph:'Der Wasserhahnenfuß hat … Dadurch …',
+   model:'Der Wasserhahnenfuß hat sehr dünne, biegsame und reißfeste Stängel und fadenförmige Blätter. Dadurch bietet er der Strömung wenig Angriffsfläche und wird nicht abgerissen.',
+   hints:['Welche Körperteile beschreibt der Text? Stängel und Blätter.','Satzbaustein: „… hat dünne, … Stängel. Dadurch …“'],
+   explain:'Vergleicht eure Antwort mit der Musterlösung.'}
+ ]},
+{ id:'m3', title:'Tiere in der Strömung', time:'Stunde 2 und 3 · ca. 35 Minuten', book:'Buch: Material C',
+  merk:'<b>Merksatz 3</b><br>Tiere im Fluss haben drei Tricks gegen die Strömung:<br>1. Festhalten mit Haken, Krallen oder Saugnäpfen.<br>2. Ein flacher Körper, damit das Wasser vorbeifließt.<br>3. Sich schwer machen, zum Beispiel mit einem Köcher aus Steinchen.',
+  tasks:[
+  {id:'3a',lv:'a',type:'mc',sym:'○',title:'Der Hakenkäfer',vis:'a:haken',
+   q:'Lest den Text. Womit hält sich der Hakenkäfer fest?',
+   opts:['mit Saugnäpfen am Bauch','mit spitzen Haken an den Beinen','mit seinen Flügeln'],ans:1,
+   hints:['Der Name des Tieres verrät es schon.','Lest den Satz mit dem Wort „Beine“.'],
+   explain:'Die Haken an den Beinen krallen sich an Steinen und Pflanzen fest.'},
+  {id:'3b',lv:'a',type:'mc',sym:'○',title:'Der Fischegel',vis:'a:egel',
+   q:'Womit hält sich der Fischegel fest?',
+   opts:['mit zwei Saugnäpfen','mit einem schweren Köcher','mit Krallen'],ans:0,
+   hints:['Lest den ersten Satz des Textes.','Ein Saugnapf funktioniert wie ein Pfeil mit Gummispitze an einer Scheibe.'],
+   explain:'Mit den Saugnäpfen saugt er sich an Fischen fest.'},
+  {id:'3c',lv:'a',type:'sentence',sym:'◐',title:'Die Mühlkoppe',vis:'a:koppe',
+   q:'Lest den Text und wählt die richtigen Wörter.',
+   parts:['Die Mühlkoppe hat einen ',{o:['runden','flachen'],a:1},' Körper.\nIhre Unterseite liegt auf dem ',{o:['Grund','Wasser'],a:0},'.\nDadurch bietet sie der Strömung ',{o:['viel','wenig'],a:2-1},' Angriffsfläche.'],
+   hints:['Im Text steht zweimal das Wort „flach“.','Flach am Boden liegen = das Wasser fließt darüber hinweg.'],
+   explain:'Ein flacher Körper bietet dem Wasser wenig Angriffsfläche.'},
+  {id:'3d',lv:'a',type:'mc',sym:'○',title:'Die Köcherfliegenlarve',vis:'a:koecher',
+   q:'Warum baut die Köcherfliegenlarve einen Köcher aus Steinchen und Sand?',
+   opts:['Der Köcher macht sie schwer und schützt sie vor Feinden.','Mit dem Köcher kann sie schneller schwimmen.','Der Köcher hält sie warm.'],ans:0,
+   hints:['Lest die letzten zwei Sätze des Textes.','Steine sind schwer. Was passiert mit etwas Schwerem im Wasser?'],
+   explain:'Durch das Gewicht bleibt die Larve am Gewässergrund.'},
+  {id:'3e',lv:'a',type:'sort',sym:'◐',title:'Drei Tricks gegen die Strömung',vis:'animals',
+   q:'Ordnet jedes Tier seinem wichtigsten Trick zu. Zieht jedes Tier zum passenden Trick. Oder: erst das Tier antippen, dann den Trick. (Tipp: Bilder 6–11 im Buch)',
+   bins:TRICKS.map(x=>({n:x.n,d:x.d})),
+   chips:[{t:'Köcherfliegenlarve',ok:[2]},{t:'Hakenkäfer',ok:[0]},{t:'Eintagsfliegenlarve',ok:[0,1]},{t:'Mühlkoppe',ok:[1]},{t:'Fischegel',ok:[0]},{t:'Flussnapfschnecke',ok:[0,1]}],
+   hints:['Fangt mit den leichten Tieren an: Hakenkäfer (Haken), Fischegel (Saugnäpfe), Köcherfliegenlarve (Steinchen).','Die Mühlkoppe liegt flach auf dem Boden. Eintagsfliegenlarve und Napfschnecke dürfen zu zwei Tricks.'],
+   explain:'Manche Tiere haben sogar zwei Tricks.'},
+  {id:'3f',lv:'p',type:'mc',sym:'●',title:'Zwei Tricks auf einmal',vis:'a:eintag',multi:true,
+   q:'Die Eintagsfliegenlarve hat zwei Tricks. Welche?',
+   opts:['ein flacher Körper','kleine Krallen an den Beinen','ein Köcher aus Steinchen','zwei Saugnäpfe'],ans:[0,1],
+   hints:['Lest den Text Satz für Satz. Sucht Körperteile.','Ein Trick steckt im Wort „abgeflacht“, der andere bei den Beinen.'],
+   explain:'Flacher Körper und Krallen: Sie liegt flach und hält sich zusätzlich fest.'},
+  {id:'3g',lv:'a',type:'mc',sym:'◐',title:'Ein Zeigertier',vis:'a:eintag',
+   q:'Die Eintagsfliegenlarve ist ein „Zeigertier“. Was zeigt sie uns an, wenn wir sie im Bach finden?',
+   opts:['Das Wasser ist sehr warm.','Das Wasser ist sauber.','Das Wasser fließt gar nicht.'],ans:1,
+   hints:['Lest den ersten Satz des Textes.','Sie lebt <b>nur</b> in … Wasser.'],
+   explain:'Findet man sie, ist die Gewässergüte sehr gut.'},
+  {id:'3h',lv:'p',type:'mc',sym:'●',title:'Knobelfrage: die Napfschnecke',vis:'a:napf',
+   q:'Die Flussnapfschnecke lebt vor allem in schnell fließenden Bächen. Warum? Denkt an Modul 1!',
+   opts:['Dort ist das Wasser am wärmsten.','Dort gibt es keine Steine.','Dort ist besonders viel Sauerstoff im Wasser.'],ans:2,
+   hints:['Was braucht die Schnecke laut Text sehr viel?','Modul 1: Je schneller das Wasser, desto …'],
+   explain:'Schnelles Wasser enthält viel Sauerstoff, den die Schnecke braucht.'},
+  {id:'3i',lv:'p',type:'text',sym:'●',title:'Ein Tier beschreiben',vis:'animals',
+   q:'Wählt ein Tier aus. Beschreibt seine Angepasstheit an die Strömung in zwei Sätzen.',
+   ph:'Die/Der … hat … Dadurch …',
+   model:'Die Flussnapfschnecke hat eine Kriechsohle, mit der sie sich an Steinen festsaugt. Außerdem ist ihr Gehäuse flach, dadurch bietet sie dem Wasser wenig Widerstand.',
+   hints:['Nehmt ein Tier, das ihr gut verstanden habt.','Satz 1: Körperteil nennen. Satz 2: mit „Dadurch …“ sagen, wie es hilft.'],
+   explain:'Vergleicht eure Antwort mit dem Beispiel.'}
+ ]}
+];
+
+const TEST=[
+ {q:'Wo fließt das Wasser eines Flusses am schnellsten?',o:['an der Mündung','an der Quelle','im Unterlauf'],a:1},
+ {q:'Je höher die Fließgeschwindigkeit, desto …',o:['höher ist der Sauerstoffgehalt.','niedriger ist der Sauerstoffgehalt.'],a:0},
+ {q:'Je wärmer das Wasser, desto …',o:['mehr Sauerstoff ist darin.','weniger Sauerstoff ist darin.'],a:1},
+ {q:'Was ist eine „Angepasstheit“?',o:['ein Körpermerkmal, das beim Leben im Lebensraum hilft','ein anderes Wort für Wohnung','eine Krankheit von Fischen'],a:0},
+ {q:'Warum reißt die Strömung den Wasserhahnenfuß nicht ab?',o:['Er hat dicke, harte Blätter.','Er hat dünne, fadenförmige Blätter. Das Wasser fließt vorbei.','Er wächst nur an Land.'],a:1},
+ {q:'Womit hält sich der Hakenkäfer fest?',o:['mit Saugnäpfen','mit Haken an den Beinen','mit einem Köcher'],a:1},
+ {q:'Warum baut die Köcherfliegenlarve einen Köcher aus Steinchen?',o:['Er macht sie schwer und schützt sie.','Er hilft ihr beim Fliegen.','Er ist ihr Futter.'],a:0},
+ {q:'Welches Tier hat einen flachen Körper und liegt am Grund des Baches?',o:['der Fischegel','die Mühlkoppe','die Köcherfliegenlarve'],a:1},
+ {q:'Bonus: Wo wächst das Quellmoos?',o:['an der Mündung','an Quelle und Oberlauf','im warmen Teich'],a:1,p:1},
+ {q:'Bonus: Warum lebt die Flussnapfschnecke in schnellen Bächen?',o:['Dort ist viel Sauerstoff.','Dort ist das Wasser warm.','Dort gibt es keine Fische.'],a:0,p:1}
+];
+
+/* ---------- Zustand ---------- */
+function blank(){return {v:1,level:null,a:'',b:'',done:{},hints:{},test:null}}
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.v===1)return s}catch(e){}return blank()}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+let S=load();
+let V={view:S.level?'home':'start'};
+let cur=null;
+const $=s=>document.querySelector(s);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const tasksFor=m=>m.tasks.filter(t=>t.lv==='a'||t.lv===(S.level==='profi'?'p':'b'));
+const doneCount=m=>tasksFor(m).filter(t=>S.done[t.id]).length;
+const testQs=()=>TEST.filter(q=>!q.p||S.level==='profi');
+
+/* ---------- Abbildungen ---------- */
+function bars(k){
+ const C={speed:{t:'Fließgeschwindigkeit in Metern pro Sekunde',v:[2.0,1.7,0.5,0.3,0.2],max:2,ticks:[0,0.5,1,1.5,2],c:'b-speed'},
+  oxy:{t:'Sauerstoff in Milligramm pro Liter Wasser',v:[12,19,8,6,5],max:20,ticks:[0,5,10,15,20],c:'b-oxy'},
+  temp:{t:'Temperatur in Grad Celsius (ungefähr)',v:[8,13,17,20,22],max:25,ticks:[0,5,10,15,20,25],c:'b-temp'}}[k];
+ const L=40,R=352,T=20,B=168,h=B-T,step=(R-L)/5,bw=38,f=v=>String(v).replace('.',',');
+ let s=`<svg viewBox="0 0 360 200" role="img" aria-label="${C.t}">`;
+ C.ticks.forEach(tk=>{const y=B-tk/C.max*h;s+=`<line class="ax" x1="${L}" x2="${R}" y1="${y}" y2="${y}"/><text class="tick" x="${L-6}" y="${y+4}" text-anchor="end">${f(tk)}</text>`});
+ C.v.forEach((v,i)=>{const x=L+i*step+(step-bw)/2,bh=v/C.max*h;s+=`<rect class="${C.c}" x="${x}" y="${B-bh}" width="${bw}" height="${bh}" rx="3"/><text x="${x+bw/2}" y="${B-bh-5}" text-anchor="middle" font-size="12" font-weight="700">${f(v)}</text><text class="tick" x="${x+bw/2}" y="${B+16}" text-anchor="middle" font-size="11.5">${STELLEN[i]}</text>`});
+ return `<div class="fig"><div class="fig-t">${C.t}</div>${s}</svg></div>`;
+}
+function river(showLabels){
+ const P=[[78,34],[170,92],[300,132],[430,156],[548,172]];
+ let s=`<svg viewBox="0 0 600 210" role="img" aria-label="Fluss vom Gebirge bis zum Meer"><path class="land" d="M0 210V120L600 150V210Z"/><path class="mount" d="M0 130L40 50L78 22L120 60L160 40L220 110L300 140L0 150Z"/><path class="sea" d="M500 210C520 185 560 168 600 160V210Z"/>`;
+ s+=`<path class="riv" stroke-width="3" d="M78 34C110 60 130 85 170 92"/><path class="riv" stroke-width="6" d="M170 92C220 100 250 125 300 132"/><path class="riv" stroke-width="9" d="M300 132C350 140 390 150 430 156"/><path class="riv" stroke-width="13" d="M430 156C470 162 510 168 560 176"/>`;
+ P.forEach((p,i)=>{s+=`<circle class="dot" cx="${p[0]}" cy="${p[1]}" r="13"/><text class="dot-n" x="${p[0]}" y="${p[1]+5}" text-anchor="middle">${i+1}</text>`;
+  if(showLabels)s+=`<text class="lab" x="${p[0]}" y="${p[1]-20}" text-anchor="middle">${STELLEN[i]}</text>`});
+ return `<div class="fig">${s}</svg></div>`;
+}
+const MOSS=`<svg viewBox="0 0 200 70" aria-hidden="true"><rect class="water-b" x="0" y="0" width="200" height="70" rx="8"/>${[20,50,80,110,140,170].map(x=>`<path class="plant-s" d="M${x} 66C${x+6} 46 ${x-6} 30 ${x+4} 10"/>${[18,30,42,54].map(y=>`<circle class="plant-f" cx="${x+(y%24?4:-3)}" cy="${y}" r="3.5"/>`).join('')}`).join('')}</svg>`;
+const HAHN=`<svg viewBox="0 0 200 70" aria-hidden="true"><rect class="water-b" x="0" y="0" width="200" height="70" rx="8"/>${[18,32,46,60].map(y=>`<path class="plant-s" stroke-width="1.6" d="M8 ${y}C50 ${y-10} 90 ${y+10} 130 ${y}S180 ${y-6} 196 ${y}"/>`).join('')}${[[70,14],[120,22],[160,12]].map(p=>`<circle class="flower" cx="${p[0]}" cy="${p[1]}" r="6"/>`).join('')}</svg>`;
+function plants(){return `<div class="cards"><div class="lw">${MOSS}<span class="tag">BILD 4 IM BUCH</span><h3>Quellmoos</h3><p>Wächst in klaren, kalten Bächen mit viel Sauerstoff. Es hat dünne, biegsame Stängel und kleine, runde Blättchen. So drückt das Wasser kaum dagegen. Mit seinen Wurzeln hält es sich sogar an glatten Steinen fest. Auch eine starke Strömung reißt es nicht los.</p></div><div class="lw">${HAHN}<span class="tag">BILD 5 IM BUCH</span><h3>Wasserhahnenfuß</h3><p>Hat sehr dünne, biegsame und reißfeste Stängel. Sie werden bis zu 6 Meter lang. Die Blätter unter Wasser sind schmal wie Fäden. So hat das Wasser wenig Angriffsfläche. Die Pflanze wird nicht so leicht abgerissen.</p></div></div>`}
+function animalCard(k,focus){const a=ANIMALS[k];return `<div class="lw ${focus?'focus':''}"><span class="tag">BILD ${a.b} IM BUCH · ${a.s.toUpperCase()}</span><h3>${a.n}</h3><p>${a.t}</p></div>`}
+function visual(v){
+ if(!v)return '';
+ if(v==='river')return river(cur&&cur.solved);
+ if(v==='river-l')return river(true);
+ if(v==='plants')return plants();
+ if(v==='animals')return `<div class="cards">${Object.keys(ANIMALS).map(k=>animalCard(k)).join('')}</div>`;
+ if(v.startsWith('a:'))return animalCard(v.slice(2),true);
+ return v.split('+').map(bars).join('');
+}
+
+/* ---------- Ansichten ---------- */
+function viewStart(){
+ const lv=V.lv||S.level;
+ return `<section class="card hero"><h1>Leben in der Strömung</h1>
+ <p>Ihr erforscht heute einen Fluss: Wie schnell fließt das Wasser? Wie viel Sauerstoff ist darin? Und wie schaffen es Pflanzen und Tiere, nicht weggespült zu werden?</p></section>
+ <section class="card"><h2>1. Wer arbeitet zusammen?</h2><p class="muted small">Ihr arbeitet zu zweit an einem iPad.</p>
+ <div class="row"><label class="field"><span>Partner A</span><input id="name-a" value="${S.a||''}" placeholder="Vorname" autocomplete="off"></label>
+ <label class="field"><span>Partner B</span><input id="name-b" value="${S.b||''}" placeholder="Vorname" autocomplete="off"></label></div></section>
+ <section class="card"><h2>2. Welche Stufe?</h2><p class="muted small">Eure Lehrkraft sagt euch, welche Stufe ihr nehmt.</p>
+ <div class="lv-grid"><button class="lv" data-act="lv" data-l="basis" aria-pressed="${lv==='basis'}"><b>Stufe 1 · Basis</b><span>Kurze Aufgaben. Ihr wählt meistens aus.</span></button>
+ <button class="lv" data-act="lv" data-l="profi" aria-pressed="${lv==='profi'}"><b>Stufe 2 · Profi</b><span>Mehr Aufgaben, Knobelfragen und eigene Sätze.</span></button></div>
+ <p class="err" id="start-err" role="alert"></p>
+ <button class="btn primary" data-act="begin">Los geht’s</button></section>`;
+}
+function viewHome(){
+ const A=S.a||'Partner A',B=S.b||'Partner B';
+ const mods=MODULES.map((m,i)=>{const n=tasksFor(m).length,d=doneCount(m),ok=d===n;
+  return `<button class="mod ${ok?'done':''}" data-act="mod" data-m="${i}"><span class="num">${ok?'✓':i+1}</span><span><h3>${m.title}</h3><span class="meta">${m.time} · ${m.book} · ${d} von ${n} Aufgaben</span><span class="minibar"><i style="width:${d/n*100}%"></i></span></span><span class="go" aria-hidden="true">›</span></button>`}).join('');
+ const T=S.test;
+ return `<section class="card"><h2>Hallo ${A} und ${B}!</h2>
+ <p>Arbeitet die drei Module der Reihe nach durch. Am Ende macht jeder allein einen kurzen Test.</p></section>
+ <section class="rules"><h3>So arbeitet ihr</h3>
+ <ol><li>Einer liest die Aufgabe laut vor, der andere tippt. Bei jeder Aufgabe wechselt ihr.</li>
+ <li>Sprecht leise miteinander. Erst gemeinsam überlegen, dann tippen.</li>
+ <li>Wenn ihr nicht weiterkommt:</li></ol>
+ <div class="steps"><span>1 · Hilfekarte</span><span>2 · Buch anschauen</span><span>3 · Lehrkraft fragen</span></div></section>
+ ${mods}
+ <button class="mod ${T&&T.done?'done':''}" data-act="test"><span class="num">${T&&T.done?'✓':'T'}</span><span><h3>Abschlusstest</h3><span class="meta">Stunde 3 · ca. 10 Minuten · jeder allein · ${testQs().length} Fragen</span></span><span class="go" aria-hidden="true">›</span></button>
+ <div class="foot"><button class="linkish" data-act="change-lv">Stufe ändern (${S.level==='profi'?'Profi':'Basis'})</button><button class="linkish" data-act="reset-ask">Für die Lehrkraft: Kurs zurücksetzen</button></div>
+ <div id="reset-box"></div>`;
+}
+function viewTask(){
+ const m=MODULES[V.m],list=tasksFor(m),t=cur.t,i=V.i;
+ const A=S.a||'Partner A',B=S.b||'Partner B',typer=i%2?B:A,reader=i%2?A:B;
+ return `<div class="crumbs"><button class="btn-ghost" data-act="home">‹ Übersicht</button><span class="where">Modul ${V.m+1} · Aufgabe ${i+1} von ${list.length}</span></div>
+ <div class="prog" aria-hidden="true"><i style="width:${(i)/list.length*100}%"></i></div>
+ <article class="card">
+  ${cur.prev?'<div class="banner">Diese Aufgabe habt ihr schon gelöst. Ihr könnt sie nochmal machen oder weitergehen.</div>':''}
+  <div class="task-h"><span class="sym" title="Schwierigkeit">${t.sym}</span><h2>${t.title}</h2></div>
+  <p class="role">${reader} liest vor · ${typer} tippt</p>
+  <p class="q">${t.q}</p>
+  <div id="vis"></div>
+  <div id="work"></div>
+  <div id="hints" style="display:flex;flex-direction:column;gap:8px"></div>
+  <div id="fb" role="status"></div>
+  <div class="actions" id="acts"></div>
+ </article>`;
+}
+function viewModDone(){
+ const m=MODULES[V.m],last=V.m===MODULES.length-1;
+ return `<section class="card" style="align-items:flex-start"><div class="big-ok">✓</div><h2>Modul ${V.m+1} geschafft!</h2>
+ <p>Schreibt den Merksatz sauber in euer Heft. Zeigt danach eurer Lehrkraft diese Seite.</p></section>
+ <div class="heft">${m.merk}</div>
+ <div class="actions"><button class="btn" data-act="home">Zur Übersicht</button>${last?'<button class="btn primary" data-act="test">Zum Abschlusstest</button>':`<button class="btn primary" data-act="mod" data-m="${V.m+1}">Weiter mit Modul ${V.m+2}</button>`}</div>`;
+}
+function viewTest(){
+ const T=S.test,Q=testQs();
+ if(!T)return `<div class="crumbs"><button class="btn-ghost" data-act="home">‹ Übersicht</button></div>
+ <section class="card"><h2>Abschlusstest</h2><p>Jetzt arbeitet <b>jeder allein</b> auf seinem eigenen iPad. Es gibt ${Q.length} Fragen. Keine Hilfekarten, kein Buch.</p>
+ <p class="muted small">Die Lehrkraft sagt euch das Codewort, wenn der Test beginnt.</p>
+ <div class="row"><label class="field"><span>Dein Vorname</span><input id="t-name" autocomplete="off"></label><label class="field"><span>Codewort</span><input id="t-code" autocomplete="off" autocapitalize="characters"></label></div>
+ <p class="err" id="t-err" role="alert"></p><button class="btn primary" data-act="t-start">Test starten</button></section>`;
+ if(T.done)return viewResult();
+ const q=Q[T.i],sel=T.ans[T.i];
+ return `<div class="crumbs"><span class="where">Test von ${T.name} · Frage ${T.i+1} von ${Q.length}</span></div>
+ <div class="prog"><i style="width:${T.i/Q.length*100}%"></i></div>
+ <section class="card"><h2>${q.q}</h2><div class="opts">${q.o.map((o,i)=>`<button class="opt ${sel===i?'on':''}" data-act="t-opt" data-i="${i}" aria-pressed="${sel===i}"><span class="key">${'ABC'[i]}</span><span>${o}</span></button>`).join('')}</div>
+ <div class="actions">${T.i>0?'<button class="btn" data-act="t-prev">Zurück</button>':''}${T.i<Q.length-1?`<button class="btn primary" data-act="t-next" ${sel==null?'disabled':''}>Nächste Frage</button>`:`<button class="btn green" data-act="t-submit" ${sel==null?'disabled':''}>Test abgeben</button>`}</div>
+ ${V.confirm?`<div class="fb info">Wirklich abgeben? Danach kannst du nichts mehr ändern.<div class="actions" style="margin-top:8px"><button class="btn" data-act="t-cancel">Nochmal prüfen</button><button class="btn green" data-act="t-final">Ja, abgeben</button></div></div>`:''}</section>`;
+}
+function viewResult(){
+ const T=S.test,Q=testQs();let core=0,bonus=0;
+ Q.forEach((q,i)=>{if(T.ans[i]===q.a){q.p?bonus++:core++}});
+ const coreN=Q.filter(q=>!q.p).length;
+ const msg=core>=7?'Hervorragend! Du kennst dich im Fluss richtig gut aus.':core>=5?'Gut gemacht! Schau dir die roten Fragen nochmal an.':'Das war ein Anfang. Lies die Merksätze in deinem Heft nochmal durch.';
+ return `<section class="card"><span class="muted">Ergebnis von <b>${T.name}</b></span><div class="score">${core} / ${coreN}</div>${bonus?`<p><b>+ ${bonus} Bonuspunkt${bonus>1?'e':''}</b></p>`:''}<p>${msg}</p><p class="muted small">Zeige dieses Ergebnis deiner Lehrkraft.</p></section>
+ <section class="card"><h3>Deine Antworten</h3><div class="res">${Q.map((q,i)=>{const r=T.ans[i]===q.a;return `<div><span class="${r?'y':'n'}">${r?'✓':'✗'}</span><span>${q.q}<br><b>${q.o[q.a]}</b>${r?'':` <span class="muted small">(du: ${q.o[T.ans[i]]??'–'})</span>`}</span></div>`}).join('')}</div></section>
+ <div class="actions"><button class="btn" data-act="home">Zur Übersicht</button></div>`;
+}
+
+/* ---------- Aufgaben-Logik ---------- */
+function openTask(mi,i){
+ const t=tasksFor(MODULES[mi])[i];
+ V={view:'task',m:mi,i};
+ cur={t,sel:[],order:(t.items||[]).map(()=>null),shuf:shuffle([...Array((t.items||t.chips||[]).length).keys()]),place:{},picked:null,
+  blanks:(t.parts||[]).filter(p=>typeof p!=='string').map(()=>null),solved:false,tries:0,wrong:new Set(),hints:0,fb:null,prev:!!S.done[t.id]};
+ if(t.type==='order'){while(cur.shuf.every((v,k)=>v===k)&&cur.shuf.length>1)cur.shuf=shuffle(cur.shuf)}
+ render();
+}
+const ansArr=t=>Array.isArray(t.ans)?t.ans:[t.ans];
+function renderWork(){
+ const t=cur.t,w=$('#work'),dis=cur.solved?'disabled':'';
+ $('#vis').innerHTML=visual(t.vis);
+ if(t.type==='mc'){
+  w.innerHTML=`${t.multi?'<p class="note">Achtung: Hier sind mehrere Antworten richtig.</p>':''}<div class="opts">${t.opts.map((o,i)=>{const on=cur.sel.includes(i);
+   const c=[on?'on':'',cur.wrong.has(i)?'bad':'',cur.solved&&ansArr(t).includes(i)?'good':''].join(' ');
+   return `<button class="opt ${c}" data-act="opt" data-i="${i}" aria-pressed="${on}" ${dis}><span class="key">${'ABCD'[i]}</span><span>${o}</span></button>`}).join('')}</div>`;
+ } else if(t.type==='order'){
+  const slots=t.items.map((_,p)=>{const it=cur.order[p];return `<button class="slot ${it!=null?'filled':''} ${cur.wrong.has(p)?'bad':''} ${cur.solved?'good':''}" data-act="ord-del" data-p="${p}" ${it==null||cur.solved?'disabled':''}><span class="n">${p+1}</span>${it!=null?t.items[it]:'…'}</button>`}).join('');
+  const pool=cur.shuf.filter(i=>!cur.order.includes(i)).map(i=>`<button class="chip" data-act="ord-add" data-i="${i}">${t.items[i]}</button>`).join('');
+  w.innerHTML=`<div class="slots">${slots}</div>${cur.solved?'':`<p class="note">Namen in ein Feld ziehen oder antippen. Falsch eingesetzt? Tippt auf das Feld, dann ist es wieder frei.</p><div class="pool">${pool}</div>`}`;
+ } else if(t.type==='sort'){
+  const chip=(i,inBin)=>{const c=t.chips[i];const cls=[cur.picked===i?'picked':'',cur.wrong.has(i)?'bad':'',cur.solved?'good':''].join(' ');
+   return `<button class="chip ${cls}" data-act="${inBin?'unplace':'pick'}" data-i="${i}" ${dis}>${c.t}</button>`};
+  const pool=cur.shuf.filter(i=>cur.place[i]==null).map(i=>chip(i,false)).join('');
+  const bins=t.bins.map((b,k)=>`<div data-k="${k}" class="bin ${cur.picked!=null?'ready':''}"><button class="bin-head" data-act="bin" data-k="${k}" ${dis}><b>${b.n}</b><small>${b.d}</small></button><div class="bin-items">${cur.shuf.filter(i=>cur.place[i]===k).map(i=>chip(i,true)).join('')}</div></div>`).join('');
+  w.innerHTML=`${pool?`<p class="note">Kärtchen:</p><div class="pool">${pool}</div>`:''}<div class="bins">${bins}</div>`;
+ } else if(t.type==='sentence'){
+  let k=0;const html=t.parts.map(p=>{if(typeof p==='string')return p.replace(/\n/g,'<br>');const b=k++;
+   return `<span class="blank ${cur.wrong.has(b)?'bad':''}">${p.o.map((o,oi)=>`<button class="seg ${cur.blanks[b]===oi?'on':''}" data-act="blank" data-b="${b}" data-o="${oi}" aria-pressed="${cur.blanks[b]===oi}" ${dis}>${o}</button>`).join('')}</span>`}).join('');
+  w.innerHTML=`<p class="sentence">${html}</p>`;
+ } else if(t.type==='text'){
+  const val=cur.text!=null?cur.text:(S.done[t.id]&&S.done[t.id].text)||'';
+  w.innerHTML=`<textarea id="txt" placeholder="${t.ph}" ${dis}>${val.replace(/</g,'&lt;')}</textarea>${cur.solved?`<div class="model"><b>So könnte eure Antwort lauten:</b><br>${t.model}</div>`:''}`;
+ }
+ $('#hints').innerHTML=t.hints.slice(0,cur.hints).map((h,i)=>`<div class="hint"><b>Hilfekarte ${i+1}</b><p>${h}</p></div>`).join('');
+ $('#fb').className=cur.fb?'fb '+cur.fb.k:'';
+ $('#fb').innerHTML=cur.fb?cur.fb.h:'';
+ const a=[];
+ if(!cur.solved&&cur.hints<t.hints.length)a.push(`<button class="btn hintbtn" data-act="hint">Hilfekarte ${cur.hints+1}</button>`);
+ if(!cur.solved&&cur.tries>=3)a.push(`<button class="btn" data-act="sol">Lösung zeigen</button>`);
+ if(!cur.solved)a.push(`<button class="btn primary" data-act="check">${t.type==='text'?'Fertig':'Prüfen'}</button>`);
+ if(cur.solved||cur.prev)a.push(`<button class="btn green" data-act="next">Weiter ›</button>`);
+ $('#acts').innerHTML=a.join('');
+}
+const PRAISE=['Richtig! Super gemacht.','Stark, das stimmt!','Genau so ist es!','Prima, richtig!'];
+function check(){
+ const t=cur.t;let ok=false,incomplete=false;cur.wrong=new Set();
+ if(t.type==='mc'){if(!cur.sel.length)incomplete=true;else{const A=ansArr(t);ok=cur.sel.length===A.length&&A.every(x=>cur.sel.includes(x));cur.sel.forEach(x=>{if(!A.includes(x))cur.wrong.add(x)})}}
+ else if(t.type==='order'){if(cur.order.some(x=>x==null))incomplete=true;else{cur.order.forEach((it,p)=>{if(it!==p)cur.wrong.add(p)});ok=!cur.wrong.size}}
+ else if(t.type==='sort'){if(t.chips.some((_,i)=>cur.place[i]==null))incomplete=true;else{t.chips.forEach((c,i)=>{if(!c.ok.includes(cur.place[i]))cur.wrong.add(i)});ok=!cur.wrong.size}}
+ else if(t.type==='sentence'){if(cur.blanks.some(b=>b==null))incomplete=true;else if(t.combos){ok=t.combos.some(c=>c.every((v,k)=>cur.blanks[k]===v));if(!ok)cur.blanks.forEach((_,k)=>cur.wrong.add(k))}else{let k=0;t.parts.forEach(p=>{if(typeof p!=='string'){if(cur.blanks[k]!==p.a)cur.wrong.add(k);k++}});ok=!cur.wrong.size}}
+ else if(t.type==='text'){cur.text=$('#txt').value;if(cur.text.trim().length<15){cur.fb={k:'no',h:'Schreibt mindestens einen ganzen Satz.'};renderWork();return}ok=true}
+ if(incomplete){cur.fb={k:'info',h:t.type==='sort'?'Ordnet zuerst alle Kärtchen zu.':t.type==='order'?'Setzt zuerst alle fünf Namen ein.':'Wählt zuerst eine Antwort aus.'};renderWork();return}
+ cur.tries++;
+ if(ok){cur.solved=true;S.done[t.id]={ok:true,tries:cur.tries,text:cur.text};save();
+  cur.fb={k:'ok',h:(t.type==='text'?'Gespeichert!':PRAISE[Math.floor(Math.random()*PRAISE.length)])+`<span>${t.explain}</span>`}}
+ else{if(cur.tries>=2&&cur.hints<t.hints.length){cur.hints++;S.hints[t.id]=(S.hints[t.id]||0)+1;save()}
+  cur.fb={k:'no',h:cur.tries>=2&&cur.hints?'Noch nicht ganz. Lest die Hilfekarte und versucht es nochmal.':'Noch nicht ganz. Das Rote stimmt noch nicht. Versucht es nochmal!'}}
+ renderWork();
+}
+function showSolution(){
+ const t=cur.t;cur.wrong=new Set();
+ if(t.type==='mc')cur.sel=ansArr(t).slice();
+ if(t.type==='order')cur.order=t.items.map((_,i)=>i);
+ if(t.type==='sort')t.chips.forEach((c,i)=>cur.place[i]=c.ok[0]);
+ if(t.type==='sentence'){if(t.combos)cur.blanks=t.combos[0].slice();else{let k=0;t.parts.forEach(p=>{if(typeof p!=='string')cur.blanks[k++]=p.a})}}
+ cur.solved=true;S.done[t.id]={ok:false,tries:cur.tries,shown:true};save();
+ cur.fb={k:'info',h:`Das ist die Lösung. Schaut sie euch genau an.<span>${t.explain}</span>`};renderWork();
+}
+
+/* ---------- Steuerung ---------- */
+function render(){
+ const app=$('#app');
+ if(V.view==='start')app.innerHTML=viewStart();
+ else if(V.view==='home')app.innerHTML=viewHome();
+ else if(V.view==='task'){app.innerHTML=viewTask();renderWork()}
+ else if(V.view==='modDone')app.innerHTML=viewModDone();
+ else if(V.view==='test')app.innerHTML=viewTest();
+ const pill=$('#lvlpill');pill.hidden=!S.level;pill.textContent=S.level==='profi'?'Stufe 2 · Profi':'Stufe 1 · Basis';
+ window.scrollTo(0,0);
+}
+/* Ziehen mit Finger oder Maus (Kärtchen in Felder) */
+let drag=null,noClickUntil=0;
+function dropTarget(x,y){const el=document.elementFromPoint(x,y);if(!el||!cur)return null;
+ if(cur.t.type==='order')return el.closest('.slot[data-p]');
+ if(cur.t.type==='sort')return el.closest('.bin[data-k]');return null}
+function clearOver(){document.querySelectorAll('.over').forEach(n=>n.classList.remove('over'))}
+document.addEventListener('pointerdown',e=>{
+ const c=e.target.closest('.chip[data-i]');if(!c||c.disabled||!cur||cur.solved)return;
+ drag={el:c,i:+c.dataset.i,x:e.clientX,y:e.clientY,id:e.pointerId,moved:false,ghost:null};
+});
+document.addEventListener('pointermove',e=>{
+ if(!drag||e.pointerId!==drag.id)return;
+ if(!drag.moved){if(Math.hypot(e.clientX-drag.x,e.clientY-drag.y)<8)return;
+  drag.moved=true;const r=drag.el.getBoundingClientRect();drag.ox=drag.x-r.left;drag.oy=drag.y-r.top;
+  const g=drag.el.cloneNode(true);g.classList.add('ghost');g.classList.remove('picked');g.style.width=r.width+'px';document.body.appendChild(g);drag.ghost=g;drag.el.classList.add('dragging')}
+ e.preventDefault();
+ drag.ghost.style.transform=`translate(${e.clientX-drag.ox}px,${e.clientY-drag.oy}px)`;
+ clearOver();const t=dropTarget(e.clientX,e.clientY);if(t)t.classList.add('over');
+},{passive:false});
+function endDrag(e,cancel){
+ if(!drag||e.pointerId!==drag.id)return;const d=drag;drag=null;
+ if(!d.moved)return;
+ noClickUntil=Date.now()+400;d.ghost.remove();d.el.classList.remove('dragging');clearOver();
+ if(cancel)return;
+ const t=dropTarget(e.clientX,e.clientY);if(!t)return;
+ if(cur.t.type==='order'){const p=+t.dataset.p,old=cur.order.indexOf(d.i);if(old>=0)cur.order[old]=null;cur.order[p]=d.i;cur.wrong.delete(p)}
+ else{cur.place[d.i]=+t.dataset.k;cur.wrong.delete(d.i);cur.picked=null}
+ renderWork();
+}
+document.addEventListener('pointerup',e=>endDrag(e,false));
+document.addEventListener('pointercancel',e=>endDrag(e,true));
+
+document.addEventListener('click',e=>{
+ if(Date.now()<noClickUntil){e.preventDefault();return}
+ const b=e.target.closest('[data-act]');if(!b||b.disabled)return;
+ const a=b.dataset.act,i=+b.dataset.i;
+ switch(a){
+  case 'gloss':$('#ov').innerHTML=`<div class="overlay" data-act="close"><div class="sheet" role="dialog" aria-label="Wörter-Hilfe"><h2>Wörter-Hilfe</h2><dl>${GLOSS.map(g=>`<div><dt>${g[0]}</dt><dd>${g[1]}</dd></div>`).join('')}</dl><button class="btn primary" data-act="close">Schließen</button></div></div>`;break;
+  case 'close':if(e.target===b)$('#ov').innerHTML='';break;
+  case 'lv':V.lv=b.dataset.l;S.a=$('#name-a').value.trim();S.b=$('#name-b').value.trim();render();break;
+  case 'begin':{S.a=$('#name-a').value.trim();S.b=$('#name-b').value.trim();const lv=V.lv||S.level;
+   if(!S.a||!S.b){$('#start-err').textContent='Tragt bitte beide Vornamen ein.';return}
+   if(!lv){$('#start-err').textContent='Wählt bitte eine Stufe aus.';return}
+   S.level=lv;save();V={view:'home'};render();break}
+  case 'change-lv':V={view:'start',lv:S.level};render();break;
+  case 'home':V={view:'home'};render();break;
+  case 'mod':{const mi=+b.dataset.m,list=tasksFor(MODULES[mi]);let k=list.findIndex(t=>!S.done[t.id]);openTask(mi,k<0?0:k);break}
+  case 'opt':if(cur.t.multi){cur.sel=cur.sel.includes(i)?cur.sel.filter(x=>x!==i):[...cur.sel,i]}else cur.sel=[i];cur.wrong.clear();renderWork();break;
+  case 'ord-add':{const p=cur.order.indexOf(null);if(p>=0)cur.order[p]=i;cur.wrong.clear();renderWork();break}
+  case 'ord-del':cur.order[+b.dataset.p]=null;cur.wrong.delete(+b.dataset.p);renderWork();break;
+  case 'pick':cur.picked=cur.picked===i?null:i;renderWork();break;
+  case 'bin':if(cur.picked!=null){cur.place[cur.picked]=+b.dataset.k;cur.wrong.delete(cur.picked);cur.picked=null;renderWork()}break;
+  case 'unplace':delete cur.place[i];cur.wrong.delete(i);renderWork();break;
+  case 'blank':cur.blanks[+b.dataset.b]=+b.dataset.o;cur.wrong.delete(+b.dataset.b);renderWork();break;
+  case 'hint':cur.hints++;S.hints[cur.t.id]=(S.hints[cur.t.id]||0)+1;save();renderWork();break;
+  case 'check':check();break;
+  case 'sol':showSolution();break;
+  case 'next':{const list=tasksFor(MODULES[V.m]);if(V.i<list.length-1)openTask(V.m,V.i+1);else{V={view:'modDone',m:V.m};render()}break}
+  case 'test':V={view:'test'};render();break;
+  case 't-start':{const n=$('#t-name').value.trim(),c=$('#t-code').value.trim().toUpperCase();
+   if(!n){$('#t-err').textContent='Trage deinen Vornamen ein.';return}
+   if(c!==CODE){$('#t-err').textContent='Das Codewort stimmt nicht. Warte, bis die Lehrkraft es sagt.';return}
+   S.test={name:n,i:0,ans:[],done:false};save();render();break}
+  case 't-opt':S.test.ans[S.test.i]=i;save();V.confirm=false;render();break;
+  case 't-next':S.test.i++;save();render();break;
+  case 't-prev':S.test.i--;V.confirm=false;save();render();break;
+  case 't-submit':V.confirm=true;render();break;
+  case 't-cancel':V.confirm=false;render();break;
+  case 't-final':S.test.done=true;V.confirm=false;save();render();break;
+  case 'reset-ask':$('#reset-box').innerHTML=`<section class="card"><h3>Kurs zurücksetzen</h3><p class="small">Alle Antworten und das Testergebnis auf diesem iPad werden gelöscht.</p><label class="field"><span>Codewort der Lehrkraft</span><input id="r-code" autocomplete="off"></label><p class="err" id="r-err"></p><div class="actions"><button class="btn" data-act="reset-no">Abbrechen</button><button class="btn primary" data-act="reset-do">Zurücksetzen</button></div></section>`;break;
+  case 'reset-no':$('#reset-box').innerHTML='';break;
+  case 'reset-do':if($('#r-code').value.trim().toUpperCase()!==CODE){$('#r-err').textContent='Falsches Codewort.';return}
+   S=blank();save();V={view:'start'};render();break;
+ }
+});
+render();
+</script>
+
+</body>
+</html>
